@@ -1,0 +1,675 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.5.61 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databses' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| d1                 |
+| india              |
+| mydb               |
+| mysql              |
+| performance_schema |
+| pratik             |
+| test               |
++--------------------+
+8 rows in set (0.01 sec)
+
+mysql> create database day_4
+    -> ;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use day_4;
+Database changed
+mysql> create table member
+    -> (
+    -> memberid int auto_increment primary key,
+    -> fname varchar(20) not null,
+    -> mname varchar(10),
+    -> lname varchar(20) not null,
+    -> mem_doj date,
+    -> email varchar(30),
+    -> phone char(10),
+    -> mem_type enum('regular','silver','gold','premium')
+    -> );
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> alter table member
+    -> add constraint mem_email_uq
+    -> unique(email);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe member;
++----------+-------------------------------------------+------+-----+---------+----------------+
+| Field    | Type                                      | Null | Key | Default | Extra          |
++----------+-------------------------------------------+------+-----+---------+----------------+
+| memberid | int(11)                                   | NO   | PRI | NULL    | auto_increment |
+| fname    | varchar(20)                               | NO   |     | NULL    |                |
+| mname    | varchar(10)                               | YES  |     | NULL    |                |
+| lname    | varchar(20)                               | NO   |     | NULL    |                |
+| mem_doj  | date                                      | YES  |     | NULL    |                |
+| email    | varchar(30)                               | YES  | UNI | NULL    |                |
+| phone    | char(10)                                  | YES  |     | NULL    |                |
+| mem_type | enum('regular','silver','gold','premium') | YES  |     | NULL    |                |
++----------+-------------------------------------------+------+-----+---------+----------------+
+8 rows in set (0.04 sec)
+
+mysql> insert into member (fname,mname,lname,mem_doj,email,phone,mem_type) values ('Janet',Null,'King',now(),'Jking@adventureworks.com','7323324509','Gold');
+Query OK, 1 row affected, 1 warning (0.06 sec)
+
+mysql> insert into member (fname,mname,lname,mem_doj,email,phone,mem_type) values ('Steve',Null,'King',now(),'Sking@adventureworks.com','7323324508','Regular');
+Query OK, 1 row affected, 1 warning (0.03 sec)
+
+mysql> insert into member (fname,mname,lname,mem_doj,email,phone,mem_type) values ('Tammy','S','King',now(),NULL,'7323324510','Silver');
+Query OK, 1 row affected, 1 warning (0.02 sec)
+
+mysql> insert into member (fname,mname,lname,mem_doj,email,phone,mem_type) values ('Andy','J','Hillman',now(),NULL,'7323324600','Silver');
+Query OK, 1 row affected, 1 warning (0.02 sec)
+
+mysql> Select * from member;
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname   | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King    | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
+|        2 | Steve | NULL  | King    | 2019-08-27 | Sking@adventureworks.com | 7323324508 | regular  |
+|        3 | Tammy | S     | King    | 2019-08-27 | NULL                     | 7323324510 | silver   |
+|        4 | Andy  | J     | Hillman | 2019-08-27 | NULL                     | 7323324600 | silver   |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> create table book
+    -> (
+    -> bookid int auto_increment primary key,
+    -> bookname varchar(50) not null,
+    -> price decimal(6,2)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> alter table book
+    -> add column author varchar(40)
+    -> not null;
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe book;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| bookid   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| bookname | varchar(50)  | NO   |     | NULL    |                |
+| price    | decimal(6,2) | YES  |     | NULL    |                |
+| author   | varchar(40)  | NO   |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+4 rows in set (0.03 sec)
+
+mysql> alter table book
+    -> modify column author varchar(30)
+    -> not null;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table book
+    -> modify column author char(30)
+    -> not null;
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe book;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| bookid   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| bookname | varchar(50)  | NO   |     | NULL    |                |
+| price    | decimal(6,2) | YES  |     | NULL    |                |
+| author   | char(30)     | NO   |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> alter table book
+    -> drop author;
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe book;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| bookid   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| bookname | varchar(50)  | NO   |     | NULL    |                |
+| price    | decimal(6,2) | YES  |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> insert into book (bookname,price) values ('MySQL for dummies',350) , ('MySQL for Developers',560);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from book;
++--------+----------------------+--------+
+| bookid | bookname             | price  |
++--------+----------------------+--------+
+|      1 | MySQL for dummies    | 350.00 |
+|      2 | MySQL for Developers | 560.00 |
++--------+----------------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into book (bookname,price) values ('HTML5 step by step',NULL) , ('Java Unleashed',-560);
+Query OK, 2 rows affected (0.07 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from book;
++--------+----------------------+---------+
+| bookid | bookname             | price   |
++--------+----------------------+---------+
+|      1 | MySQL for dummies    |  350.00 |
+|      2 | MySQL for Developers |  560.00 |
+|      3 | HTML5 step by step   |    NULL |
+|      4 | Java Unleashed       | -560.00 |
++--------+----------------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> delete from book
+    -> where bookid = 4;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from book;
++--------+----------------------+--------+
+| bookid | bookname             | price  |
++--------+----------------------+--------+
+|      1 | MySQL for dummies    | 350.00 |
+|      2 | MySQL for Developers | 560.00 |
+|      3 | HTML5 step by step   |   NULL |
++--------+----------------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> turncate book;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'turncate book' at line 1
+mysql> turncate table book;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'turncate table book' at line 1
+mysql> truncate table book;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from book;
+Empty set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from book;
+Empty set (0.00 sec)
+
+mysql> insert into book (bookname,price) values ('MySQL for dummies',350) , ('MySQL for Developers',560);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into book (bookname,price) values ('HTML5 step by step',NULL) , ('Java Unleashed',-560);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> alter table book
+    -> add constraint book_price_chk
+    -> check(price >= 200 and price <= 3000);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into book (bookname,price) values ('HTML5',100);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from book;
++--------+----------------------+---------+
+| bookid | bookname             | price   |
++--------+----------------------+---------+
+|      1 | MySQL for dummies    |  350.00 |
+|      2 | MySQL for Developers |  560.00 |
+|      3 | HTML5 step by step   |    NULL |
+|      4 | Java Unleashed       | -560.00 |
+|      5 | HTML5                |  100.00 |
++--------+----------------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> alter table book
+    -> drop constraint book_price_chk;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint book_price_chk' at line 2
+mysql> alter table book
+    -> drop constraint check(price);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint check(price)' at line 2
+mysql> alter table book
+    -> drop constraint book_price_chk check(price);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint book_price_chk check(price)' at line 2
+mysql> alter table book
+    -> drop constraint book_price_chk;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint book_price_chk' at line 2
+mysql> alter table book
+    -> drop constraint book_price_chk
+    -> check(price >= 200 and price <= 3000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint book_price_chk
+check(price >= 200 and price <= 3000)' at line 2
+mysql> describe book;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| bookid   | int(11)      | NO   | PRI | NULL    | auto_increment |
+| bookname | varchar(50)  | NO   |     | NULL    |                |
+| price    | decimal(6,2) | YES  |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> create table booktrans
+    -> (
+    -> trnid int auto_incremnet primary key,
+    -> trndate datetime,
+    -> bookid int references book(bookid),
+    -> memberid int,
+    -> constraint booktrans_memberid_fk
+    -> foreign key(memberid)
+    -> references member(memberid)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_incremnet primary key,
+trndate datetime,
+bookid int references book(bookid)' at line 3
+mysql> create table booktran
+    -> (
+    -> trnid int auto_increment primary key,
+    -> trndate datetime,
+    -> bookid int references book(bookid),
+    -> memberid int,
+    -> constraint booktran_memberid_fkk
+    -> foreign key(memberid)
+    -> references member(memberid)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> describe booktran;
++----------+----------+------+-----+---------+----------------+
+| Field    | Type     | Null | Key | Default | Extra          |
++----------+----------+------+-----+---------+----------------+
+| trnid    | int(11)  | NO   | PRI | NULL    | auto_increment |
+| trndate  | datetime | YES  |     | NULL    |                |
+| bookid   | int(11)  | YES  |     | NULL    |                |
+| memberid | int(11)  | YES  | MUL | NULL    |                |
++----------+----------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> drop booktran;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'booktran' at line 1
+mysql> drop table booktran;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE BookTran
+    -> (
+    ->   TrnID int AUTO_INCREMENT
+    ->     primary key,
+    ->   TrnDate datetime,
+    ->   BookID int,
+    ->   MemberID int,
+    ->
+    ->   CONSTRAINT BookTran_BookID_FK
+    -> foreign key(bookid)
+    -> refereneces book(bookid),
+    ->
+    -> contraint BookTran_MemberID_FK
+    -> foreign key(MemberID)
+    -> references member(memberid)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refereneces book(bookid),
+
+contraint BookTran_MemberID_FK
+foreign key(MemberID)
+' at line 11
+mysql> CREATE TABLE booktran
+    -> (
+    ->   trnid int AUTO_INCREMENT
+    -> primary key,
+    -> trndate datetime,
+    -> bookid int,
+    -> memberid int,
+    -> constraint booktran_bookid_fk
+    -> foreign key(bookid)
+    -> references book(bookid),
+    -> constraint booktran_memberid_fk
+    -> foreign key(memberid)
+    -> references member(memberid)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> describe booktran;
++----------+----------+------+-----+---------+----------------+
+| Field    | Type     | Null | Key | Default | Extra          |
++----------+----------+------+-----+---------+----------------+
+| trnid    | int(11)  | NO   | PRI | NULL    | auto_increment |
+| trndate  | datetime | YES  |     | NULL    |                |
+| bookid   | int(11)  | YES  | MUL | NULL    |                |
+| memberid | int(11)  | YES  | MUL | NULL    |                |
++----------+----------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into booktran(trndate,bookid,memberid) values (now(),4,1);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into booktran(trndate,bookid,memberid) values (now(),5,10);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`day_4`.`booktran`, CONSTRAINT `booktran_memberid_fk` FOREIGN KEY (`memberid`) REFERENCES `member` (`memberid`))
+mysql> select * from booktran;
++-------+---------------------+--------+----------+
+| trnid | trndate             | bookid | memberid |
++-------+---------------------+--------+----------+
+|     1 | 2019-08-27 17:46:59 |      4 |        1 |
++-------+---------------------+--------+----------+
+1 row in set (0.00 sec)
+
+mysql> insert into booktran(trndate,bookid,memberid) values (now(),2,1);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into booktran(trndate,bookid,memberid) values (now(),1,10);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`day_4`.`booktran`, CONSTRAINT `booktran_memberid_fk` FOREIGN KEY (`memberid`) REFERENCES `member` (`memberid`))
+mysql> insert into booktran(trndate,bookid,memberid) values (now(),1,2);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from booktran;
++-------+---------------------+--------+----------+
+| trnid | trndate             | bookid | memberid |
++-------+---------------------+--------+----------+
+|     1 | 2019-08-27 17:46:59 |      4 |        1 |
+|     3 | 2019-08-27 17:52:32 |      2 |        1 |
+|     5 | 2019-08-27 17:52:55 |      1 |        2 |
++-------+---------------------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> delete from book
+    -> where bookid = 5;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from book;
++--------+----------------------+---------+
+| bookid | bookname             | price   |
++--------+----------------------+---------+
+|      1 | MySQL for dummies    |  350.00 |
+|      2 | MySQL for Developers |  560.00 |
+|      3 | HTML5 step by step   |    NULL |
+|      4 | Java Unleashed       | -560.00 |
++--------+----------------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> delete from book
+    -> where bookid = 4;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`day_4`.`booktran`, CONSTRAINT `booktran_bookid_fk` FOREIGN KEY (`bookid`) REFERENCES `book` (`bookid`))
+mysql> insert into booktran(trndate,bookid,memberid) values (now(),4,2);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from member;
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname   | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King    | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
+|        2 | Steve | NULL  | King    | 2019-08-27 | Sking@adventureworks.com | 7323324508 | regular  |
+|        3 | Tammy | S     | King    | 2019-08-27 | NULL                     | 7323324510 | silver   |
+|        4 | Andy  | J     | Hillman | 2019-08-27 | NULL                     | 7323324600 | silver   |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select fname from member
+    -> where memberid=3;
++-------+
+| fname |
++-------+
+| Tammy |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select (fname,mname,lname) from member
+    -> where memberid=4;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select fname,mname,lname from member
+    -> where memberid=4;
++-------+-------+---------+
+| fname | mname | lname   |
++-------+-------+---------+
+| Andy  | J     | Hillman |
++-------+-------+---------+
+1 row in set (0.00 sec)
+
+mysql> select fname,mname,lname from member
+    -> where memberid=1;
++-------+-------+-------+
+| fname | mname | lname |
++-------+-------+-------+
+| Janet | NULL  | King  |
++-------+-------+-------+
+1 row in set (0.00 sec)
+
+mysql> select fname from member as name
+    -> where memberid = 1;
++-------+
+| fname |
++-------+
+| Janet |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select fname as name from member
+    -> where memberid = 1;
++-------+
+| name  |
++-------+
+| Janet |
++-------+
+1 row in set (0.01 sec)
+
+mysql> select fname as name from member
+    -> where memberid > 1;
++-------+
+| name  |
++-------+
+| Steve |
+| Tammy |
+| Andy  |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select fname as name from member
+    -> where memberid < 3;
++-------+
+| name  |
++-------+
+| Janet |
+| Steve |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from member
+    -> where memberid != 3;
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname   | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King    | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
+|        2 | Steve | NULL  | King    | 2019-08-27 | Sking@adventureworks.com | 7323324508 | regular  |
+|        4 | Andy  | J     | Hillman | 2019-08-27 | NULL                     | 7323324600 | silver   |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select * from member
+    -> where memberid <> 3;
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname   | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King    | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
+|        2 | Steve | NULL  | King    | 2019-08-27 | Sking@adventureworks.com | 7323324508 | regular  |
+|        4 | Andy  | J     | Hillman | 2019-08-27 | NULL                     | 7323324600 | silver   |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select memberid as id,fname from member
+    -> where memberid<>3
+    -> order by id;
++----+-------+
+| id | fname |
++----+-------+
+|  1 | Janet |
+|  2 | Steve |
+|  4 | Andy  |
++----+-------+
+3 rows in set (0.00 sec)
+
+mysql> select*from book;
++--------+----------------------+---------+
+| bookid | bookname             | price   |
++--------+----------------------+---------+
+|      1 | MySQL for dummies    |  350.00 |
+|      2 | MySQL for Developers |  560.00 |
+|      3 | HTML5 step by step   |    NULL |
+|      4 | Java Unleashed       | -560.00 |
++--------+----------------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from book
+    -> where price/10 > 40;
++--------+----------------------+--------+
+| bookid | bookname             | price  |
++--------+----------------------+--------+
+|      2 | MySQL for Developers | 560.00 |
++--------+----------------------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from book
+    -> where price*2 >700 ;
++--------+----------------------+--------+
+| bookid | bookname             | price  |
++--------+----------------------+--------+
+|      2 | MySQL for Developers | 560.00 |
++--------+----------------------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from book
+    -> where price*2 >=700 ;
++--------+----------------------+--------+
+| bookid | bookname             | price  |
++--------+----------------------+--------+
+|      1 | MySQL for dummies    | 350.00 |
+|      2 | MySQL for Developers | 560.00 |
++--------+----------------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from member;
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname   | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King    | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
+|        2 | Steve | NULL  | King    | 2019-08-27 | Sking@adventureworks.com | 7323324508 | regular  |
+|        3 | Tammy | S     | King    | 2019-08-27 | NULL                     | 7323324510 | silver   |
+|        4 | Andy  | J     | Hillman | 2019-08-27 | NULL                     | 7323324600 | silver   |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select fname from member
+    -> where fname like 'J_____';
+Empty set (0.01 sec)
+
+mysql> select fname from member
+    -> where fname like 'J%';_
++-------+
+| fname |
++-------+
+| Janet |
++-------+
+1 row in set (0.00 sec)
+
+    -> select * from member
+    -> where fname like '%e%';_
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '_
+select * from member
+where fname like '%e%'' at line 1
+    -> select * from member
+    -> where fname like '%e%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '_
+select * from member
+where fname like '%e%'' at line 1
+mysql> select * from member
+    -> where fname like 'J%';_
++----------+-------+-------+-------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+-------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King  | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
++----------+-------+-------+-------+------------+--------------------------+------------+----------+
+1 row in set (0.00 sec)
+
+    -> select * from member
+    -> where fname like '%an%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '_
+select * from member
+where fname like '%an%'' at line 1
+mysql> select fname from member
+    -> where fname like '%an%';
++-------+
+| fname |
++-------+
+| Janet |
+| Andy  |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from member
+    -> where fname like '%an%';
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname   | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King    | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
+|        4 | Andy  | J     | Hillman | 2019-08-27 | NULL                     | 7323324600 | silver   |
++----------+-------+-------+---------+------------+--------------------------+------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from member
+    -> where fname like '%y';
++----------+-------+-------+---------+------------+-------+------------+----------+
+| memberid | fname | mname | lname   | mem_doj    | email | phone      | mem_type |
++----------+-------+-------+---------+------------+-------+------------+----------+
+|        3 | Tammy | S     | King    | 2019-08-27 | NULL  | 7323324510 | silver   |
+|        4 | Andy  | J     | Hillman | 2019-08-27 | NULL  | 7323324600 | silver   |
++----------+-------+-------+---------+------------+-------+------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select length(fname),fanme from member
+    -> where length(fname)=5 ;
+ERROR 1054 (42S22): Unknown column 'fanme' in 'field list'
+mysql> select length(fname),fname from member
+    -> where length(fname)=5 ;
++---------------+-------+
+| length(fname) | fname |
++---------------+-------+
+|             5 | Janet |
+|             5 | Steve |
+|             5 | Tammy |
++---------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select length(fname),fname from member
+    -> where fname like 'J____';
++---------------+-------+
+| length(fname) | fname |
++---------------+-------+
+|             5 | Janet |
++---------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from member
+    -> where fname like 'J____';
++----------+-------+-------+-------+------------+--------------------------+------------+----------+
+| memberid | fname | mname | lname | mem_doj    | email                    | phone      | mem_type |
++----------+-------+-------+-------+------------+--------------------------+------------+----------+
+|        1 | Janet | NULL  | King  | 2019-08-27 | Jking@adventureworks.com | 7323324509 | gold     |
++----------+-------+-------+-------+------------+--------------------------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql>
