@@ -1,0 +1,546 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7
+Server version: 5.5.61 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use day6;
+Database changed
+mysql> create table location
+    -> (
+    -> locid int primary key,
+    -> city varchar(20) NOT NULL,
+    -> addr varchar(20)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> INSERT INTO location values (1,'mumbai','mbp'),(2,'banglore','itpl'),(3,'pune','hinje wadi'),(4,'gurgaon','dlf 2'),(5,'hyderabad','hitechcity');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from location;
++-------+-----------+------------+
+| locid | city      | addr       |
++-------+-----------+------------+
+|     1 | mumbai    | mbp        |
+|     2 | banglore  | itpl       |
+|     3 | pune      | hinje wadi |
+|     4 | gurgaon   | dlf 2      |
+|     5 | hyderabad | hitechcity |
++-------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> create table dept
+    -> (
+    -> deptid int primary key,
+    -> dname varchar(10) not null,
+    -> locid int,
+    ->
+    -> contraint dept
+    -> _locid_fk foreign key(locid)
+    -> references location(locid)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dept
+_locid_fk foreign key(locid)
+references location(locid)
+)' at line 7
+mysql> create table dept
+    -> (
+    -> deptid int primary key,
+    -> dname varchar(10) not null,
+    -> locid int,
+    -> constraint dept_locid_fk foreign key(locid) refrences location(locid)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refrences location(locid)
+)' at line 6
+mysql>  create table dept
+    ->      (
+    ->      deptid int primary key,
+    ->      dname varchar(10) not null,
+    ->      locid int,
+    ->      constraint dept_locid_fk foreign key(locid) references location(locid)
+    ->      );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> INSERT INTO dept VALUES
+    -> (101, 'Sales', 1),
+    -> (102, 'HR', 3),
+    -> (103, 'Finance', 2),
+    -> (104, 'MKTG', 3),
+    -> (105, 'OPS', 4),
+    -> (106, 'IT', 4);
+Query OK, 6 rows affected (0.04 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO dept VALUES
+    -> (107, 'Trvl Desk', NULL);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> CREATE TABLE Emp
+    -> (EmpID int primary key,
+    ->  FName varchar(10) not null,
+    ->  LName varchar(10) not null,
+    ->  DeptID int,
+    ->  MgrID int,
+    ->  Salary decimal(10, 2),
+    ->  constraint emp_deptid_fk
+    ->  foreign key(Deptid)
+    ->  references dept(deptid),
+    ->
+    ->  constraint emp_mrgid_fk
+    ->  foreign key(MrgID)
+    ->  references Emp(EmpId)
+    -> );
+ERROR 1072 (42000): Key column 'MrgID' doesn't exist in table
+mysql> CREATE TABLE Emp
+    -> (EmpID int primary key,
+    ->  FName varchar(10) not null,
+    ->  LName varchar(10) not null,
+    ->  DeptID int,
+    ->  MgrID int,
+    ->  Salary decimal(10, 2),
+    ->  constraint emp_deptid_fk
+    ->  foreign key(Deptid)
+    ->  references dept(deptid),
+    ->
+    ->  constraint emp_mgrid_fk
+    ->  foreign key(MgrID)
+    ->  references Emp(EmpId)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql>
+mysql> INSERT INTO Emp VALUES
+    -> (1001, 'Steven', 'King', 105, NULL, 50000),
+    -> (1003, 'Nancy', 'Greenberg', 102, 1001, 35000),
+    -> (1002, 'Neena', 'Kochhar', 105, 1003, 40000);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO Emp VALUES
+    -> (1004, 'Andrew', 'Lusk', 101, 1002, 15000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql>
+mysql>
+mysql> INSERT INTO Emp VALUES
+    -> (1006, 'Andy', 'Hillman', 105, 1001, 30000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql>
+mysql> INSERT INTO Emp VALUES
+    -> (1005, 'Pamela', 'Davis', NULL, 1002, 14000),
+    -> (1007, 'Rene', 'Lopez', 105, 1001, 18000),
+    -> (1009, 'Sue', 'Fisher', 105, 1001, 11000),
+    -> (1008, 'Tanya', 'Rff', 105, 1001, 10000);
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from location;
++-------+-----------+------------+
+| locid | city      | addr       |
++-------+-----------+------------+
+|     1 | mumbai    | mbp        |
+|     2 | banglore  | itpl       |
+|     3 | pune      | hinje wadi |
+|     4 | gurgaon   | dlf 2      |
+|     5 | hyderabad | hitechcity |
++-------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+-----------+-------+
+| deptid | dname     | locid |
++--------+-----------+-------+
+|    101 | Sales     |     1 |
+|    102 | HR        |     3 |
+|    103 | Finance   |     2 |
+|    104 | MKTG      |     3 |
+|    105 | OPS       |     4 |
+|    106 | IT        |     4 |
+|    107 | Trvl Desk |  NULL |
++--------+-----------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select * from Emp;
++-------+--------+-----------+--------+-------+----------+
+| EmpID | FName  | LName     | DeptID | MgrID | Salary   |
++-------+--------+-----------+--------+-------+----------+
+|  1001 | Steven | King      |    105 |  NULL | 50000.00 |
+|  1002 | Neena  | Kochhar   |    105 |  1003 | 40000.00 |
+|  1003 | Nancy  | Greenberg |    102 |  1001 | 35000.00 |
+|  1004 | Andrew | Lusk      |    101 |  1002 | 15000.00 |
+|  1005 | Pamela | Davis     |   NULL |  1002 | 14000.00 |
+|  1006 | Andy   | Hillman   |    105 |  1001 | 30000.00 |
+|  1007 | Rene   | Lopez     |    105 |  1001 | 18000.00 |
+|  1008 | Tanya  | Rff       |    105 |  1001 | 10000.00 |
+|  1009 | Sue    | Fisher    |    105 |  1001 | 11000.00 |
++-------+--------+-----------+--------+-------+----------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT DName, City, Addr
+    ->   FROM Dept INNER JOIN
+    ->        Location
+    ->     ON Dept.LocID = Location.LocID;
++---------+----------+------------+
+| DName   | City     | Addr       |
++---------+----------+------------+
+| Sales   | mumbai   | mbp        |
+| Finance | banglore | itpl       |
+| HR      | pune     | hinje wadi |
+| MKTG    | pune     | hinje wadi |
+| OPS     | gurgaon  | dlf 2      |
+| IT      | gurgaon  | dlf 2      |
++---------+----------+------------+
+6 rows in set (0.01 sec)
+
+mysql> SELECT DName, City, Addr
+    ->   FROM Dept LEFT OUTER JOIN
+    ->        Location
+    ->     ON Dept.LocID = Location.LocID;
++-----------+----------+------------+
+| DName     | City     | Addr       |
++-----------+----------+------------+
+| Sales     | mumbai   | mbp        |
+| HR        | pune     | hinje wadi |
+| Finance   | banglore | itpl       |
+| MKTG      | pune     | hinje wadi |
+| OPS       | gurgaon  | dlf 2      |
+| IT        | gurgaon  | dlf 2      |
+| Trvl Desk | NULL     | NULL       |
++-----------+----------+------------+
+7 rows in set (0.01 sec)
+
+mysql> SELECT DName, City, Addr
+    ->   FROM Dept RIGHT OUTER JOIN
+    ->        Location
+    ->     ON Dept.LocID = Location.LocID;
++---------+-----------+------------+
+| DName   | City      | Addr       |
++---------+-----------+------------+
+| Sales   | mumbai    | mbp        |
+| Finance | banglore  | itpl       |
+| HR      | pune      | hinje wadi |
+| MKTG    | pune      | hinje wadi |
+| OPS     | gurgaon   | dlf 2      |
+| IT      | gurgaon   | dlf 2      |
+| NULL    | hyderabad | hitechcity |
++---------+-----------+------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT DName, City, Addr
+    ->   FROM Dept RIGHT OUTER JOIN
+    ->        Location
+    ->     ON Dept.LocID = Location.LocID
+    ->   WHERE DName IS NULL;
++-------+-----------+------------+
+| DName | City      | Addr       |
++-------+-----------+------------+
+| NULL  | hyderabad | hitechcity |
++-------+-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DName, City, Addr
+    ->   FROM Dept INNER JOIN
+    ->        Location
+    ->     ON Dept.LocID = Location.LocID
+    ->   WHERE City = 'Gurgaon';
++-------+---------+-------+
+| DName | City    | Addr  |
++-------+---------+-------+
+| OPS   | gurgaon | dlf 2 |
+| IT    | gurgaon | dlf 2 |
++-------+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT DName, FName, LName, City, Addr
+    ->   FROM Dept INNER JOIN Location
+    ->     ON Dept.LocID = Location.LocID
+    ->     INNER JOIN Emp
+    ->     ON Dept.DeptID = Emp.DeptID;
++-------+--------+-----------+---------+------------+
+| DName | FName  | LName     | City    | Addr       |
++-------+--------+-----------+---------+------------+
+| Sales | Andrew | Lusk      | mumbai  | mbp        |
+| HR    | Nancy  | Greenberg | pune    | hinje wadi |
+| OPS   | Steven | King      | gurgaon | dlf 2      |
+| OPS   | Neena  | Kochhar   | gurgaon | dlf 2      |
+| OPS   | Andy   | Hillman   | gurgaon | dlf 2      |
+| OPS   | Rene   | Lopez     | gurgaon | dlf 2      |
+| OPS   | Tanya  | Rff       | gurgaon | dlf 2      |
+| OPS   | Sue    | Fisher    | gurgaon | dlf 2      |
++-------+--------+-----------+---------+------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT DName,
+    ->        CONCAT(FName, ' ', LName) AS Name,
+    ->        City, Addr
+    ->   FROM Dept INNER JOIN Location
+    ->     ON Dept.LocID = Location.LocID
+    ->     INNER JOIN Emp
+    ->     ON Dept.DeptID = Emp.DeptID;
++-------+-----------------+---------+------------+
+| DName | Name            | City    | Addr       |
++-------+-----------------+---------+------------+
+| Sales | Andrew Lusk     | mumbai  | mbp        |
+| HR    | Nancy Greenberg | pune    | hinje wadi |
+| OPS   | Steven King     | gurgaon | dlf 2      |
+| OPS   | Neena Kochhar   | gurgaon | dlf 2      |
+| OPS   | Andy Hillman    | gurgaon | dlf 2      |
+| OPS   | Rene Lopez      | gurgaon | dlf 2      |
+| OPS   | Tanya Rff       | gurgaon | dlf 2      |
+| OPS   | Sue Fisher      | gurgaon | dlf 2      |
++-------+-----------------+---------+------------+
+8 rows in set (0.02 sec)
+
+mysql> SELECT d.DName,
+    ->        CONCAT(e.FName, ' ', e.LName) AS Name,
+    ->        l.City, l.Addr
+    ->   FROM Dept d INNER JOIN Location l
+    ->     ON d.LocID = l.LocID
+    ->     INNER JOIN Emp e
+    ->     ON d.DeptID = e.DeptID;
++-------+-----------------+---------+------------+
+| DName | Name            | City    | Addr       |
++-------+-----------------+---------+------------+
+| Sales | Andrew Lusk     | mumbai  | mbp        |
+| HR    | Nancy Greenberg | pune    | hinje wadi |
+| OPS   | Steven King     | gurgaon | dlf 2      |
+| OPS   | Neena Kochhar   | gurgaon | dlf 2      |
+| OPS   | Andy Hillman    | gurgaon | dlf 2      |
+| OPS   | Rene Lopez      | gurgaon | dlf 2      |
+| OPS   | Tanya Rff       | gurgaon | dlf 2      |
+| OPS   | Sue Fisher      | gurgaon | dlf 2      |
++-------+-----------------+---------+------------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO Emp VALUES
+    -> (1005, 'Pamela', 'Davis', NULL, 1002);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> select * from emp;
++-------+--------+-----------+--------+-------+----------+
+| EmpID | FName  | LName     | DeptID | MgrID | Salary   |
++-------+--------+-----------+--------+-------+----------+
+|  1001 | Steven | King      |    105 |  NULL | 50000.00 |
+|  1002 | Neena  | Kochhar   |    105 |  1003 | 40000.00 |
+|  1003 | Nancy  | Greenberg |    102 |  1001 | 35000.00 |
+|  1004 | Andrew | Lusk      |    101 |  1002 | 15000.00 |
+|  1005 | Pamela | Davis     |   NULL |  1002 | 14000.00 |
+|  1006 | Andy   | Hillman   |    105 |  1001 | 30000.00 |
+|  1007 | Rene   | Lopez     |    105 |  1001 | 18000.00 |
+|  1008 | Tanya  | Rff       |    105 |  1001 | 10000.00 |
+|  1009 | Sue    | Fisher    |    105 |  1001 | 11000.00 |
++-------+--------+-----------+--------+-------+----------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT d.DName,
+    ->   CONCAT(e.FName, ' ', e.LName) AS EmpName
+    ->   FROM Dept d RIGHT OUTER JOIN Emp e
+    ->     ON d.DeptID = e.DeptID;
++-------+-----------------+
+| DName | EmpName         |
++-------+-----------------+
+| OPS   | Steven King     |
+| OPS   | Neena Kochhar   |
+| HR    | Nancy Greenberg |
+| Sales | Andrew Lusk     |
+| NULL  | Pamela Davis    |
+| OPS   | Andy Hillman    |
+| OPS   | Rene Lopez      |
+| OPS   | Tanya Rff       |
+| OPS   | Sue Fisher      |
++-------+-----------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT CONCAT(emp.FName, ' ',
+    ->               emp.LName) AS EmpName,
+    -> CONCAT(mgr.FName, ' ',
+    ->               mgr.LName) AS MgrNAme
+    ->   FROM Emp emp INNER JOIN Emp mgr
+    ->     ON emp.MgrID = mgr.EmpID;
++-----------------+-----------------+
+| EmpName         | MgrNAme         |
++-----------------+-----------------+
+| Neena Kochhar   | Nancy Greenberg |
+| Nancy Greenberg | Steven King     |
+| Andrew Lusk     | Neena Kochhar   |
+| Pamela Davis    | Neena Kochhar   |
+| Andy Hillman    | Steven King     |
+| Rene Lopez      | Steven King     |
+| Tanya Rff       | Steven King     |
+| Sue Fisher      | Steven King     |
++-----------------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT CONCAT(emp.FName, ' ',
+    ->               emp.LName) AS EmpName,
+    -> CONCAT(mgr.FName, ' ',
+    ->               mgr.LName) AS MgrNAme
+    ->   FROM Emp emp LEFT OUTER JOIN Emp mgr
+    ->     ON emp.MgrID = mgr.EmpID;
++-----------------+-----------------+
+| EmpName         | MgrNAme         |
++-----------------+-----------------+
+| Steven King     | NULL            |
+| Neena Kochhar   | Nancy Greenberg |
+| Nancy Greenberg | Steven King     |
+| Andrew Lusk     | Neena Kochhar   |
+| Pamela Davis    | Neena Kochhar   |
+| Andy Hillman    | Steven King     |
+| Rene Lopez      | Steven King     |
+| Tanya Rff       | Steven King     |
+| Sue Fisher      | Steven King     |
++-----------------+-----------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT CONCAT(emp.FName, ' ',
+    ->               emp.LName) AS EmpName,
+    -> CONCAT(mgr.FName, ' ',
+    ->               mgr.LName) AS MgrNAme
+    ->   FROM Emp emp LEFT OUTER JOIN Emp mgr
+    ->     ON emp.MgrID = mgr.EmpID
+    -> WHERE emp.MgrID IS NULL;
++-------------+---------+
+| EmpName     | MgrNAme |
++-------------+---------+
+| Steven King | NULL    |
++-------------+---------+
+1 row in set (0.02 sec)
+
+mysql> SELECT CONCAT(FName, ' ', LName) AS EmpName
+    ->   FROM Emp
+    ->   WHERE Salary = MAX(Salary);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> SELECT CONCAT(FName, ' ', LName) AS EmpName
+    ->   FROM Emp
+    ->   WHERE Salary = (SELECT MAX(Salary)
+    ->     FROM Emp
+    ->  );
++-------------+
+| EmpName     |
++-------------+
+| Steven King |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CONCAT(FName, ' ', LName) AS EmpName
+    ->   FROM Emp
+    ->   WHERE Salary = (SELECT MAX(Salary)
+    ->     FROM Emp
+    ->                     WHERE Salary <
+    ->                     (
+    ->                       SELECT MAX(Salary)
+    -> FROM Emp
+    ->     )
+    ->  );
++---------------+
+| EmpName       |
++---------------+
+| Neena Kochhar |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CONCAT(FName, ' ', LName) AS EmpName
+    ->                 FROM Emp
+    ->      ORDER BY Salary DESC
+    ->      LIMIT 3, n;
+ERROR 1327 (42000): Undeclared variable: n
+mysql> SELECT CONCAT(FName, ' ', LName) AS EmpName
+    ->                 FROM Emp
+    ->      ORDER BY Salary DESC
+    ->      LIMIT 3, 1;
++--------------+
+| EmpName      |
++--------------+
+| Andy Hillman |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CONCAT(e1.FName, ' ', e1.LName) AS EmpName,
+    -> e1.Salary,
+    ->         COUNT(DISTINCT e2.Salary) AS RowCnt
+    ->   FROM Emp e1 INNER JOIN Emp e2
+    ->     ON e1.Salary <= e2.Salary
+    ->   GROUP BY e1.Salary,
+    ->    CONCAT(e1.FName, ' ', e1.LName)
+    ->   HAVING COUNT(DISTINCT e2.Salary) = 1;
++-------------+----------+--------+
+| EmpName     | Salary   | RowCnt |
++-------------+----------+--------+
+| Steven King | 50000.00 |      1 |
++-------------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CONCAT(e1.FName, ' ', e1.LName) AS EmpName,
+    -> e1.Salary,
+    ->         COUNT(DISTINCT e2.Salary) AS RowCnt
+    ->   FROM Emp e1 INNER JOIN Emp e2
+    ->     ON e1.Salary <= e2.Salary
+    ->   GROUP BY e1.Salary,
+    ->    CONCAT(e1.FName, ' ', e1.LName)
+    ->   HAVING COUNT(DISTINCT e2.Salary) = 4;
++--------------+----------+--------+
+| EmpName      | Salary   | RowCnt |
++--------------+----------+--------+
+| Andy Hillman | 30000.00 |      4 |
++--------------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CONCAT(FName, ' ',LName) AS EmpName,
+    -> Salary
+    ->   FROM Emp
+    ->   WHERE Salary > (SELECT AVG(Salary)
+    ->     FROM Emp
+    ->  );
++-----------------+----------+
+| EmpName         | Salary   |
++-----------------+----------+
+| Steven King     | 50000.00 |
+| Neena Kochhar   | 40000.00 |
+| Nancy Greenberg | 35000.00 |
+| Andy Hillman    | 30000.00 |
++-----------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+--------+-----------+--------+-------+----------+
+| EmpID | FName  | LName     | DeptID | MgrID | Salary   |
++-------+--------+-----------+--------+-------+----------+
+|  1001 | Steven | King      |    105 |  NULL | 50000.00 |
+|  1002 | Neena  | Kochhar   |    105 |  1003 | 40000.00 |
+|  1003 | Nancy  | Greenberg |    102 |  1001 | 35000.00 |
+|  1004 | Andrew | Lusk      |    101 |  1002 | 15000.00 |
+|  1005 | Pamela | Davis     |   NULL |  1002 | 14000.00 |
+|  1006 | Andy   | Hillman   |    105 |  1001 | 30000.00 |
+|  1007 | Rene   | Lopez     |    105 |  1001 | 18000.00 |
+|  1008 | Tanya  | Rff       |    105 |  1001 | 10000.00 |
+|  1009 | Sue    | Fisher    |    105 |  1001 | 11000.00 |
++-------+--------+-----------+--------+-------+----------+
+9 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT CONCAT(FName, ' ',LName) AS EmpName,
+    -> DeptID, Salary
+    ->   FROM Emp main
+    ->   WHERE Salary > (SELECT AVG(Salary)
+    ->     FROM Emp
+    ->     WHERE DeptID = main.DeptID
+    ->  );
++---------------+--------+----------+
+| EmpName       | DeptID | Salary   |
++---------------+--------+----------+
+| Steven King   |    105 | 50000.00 |
+| Neena Kochhar |    105 | 40000.00 |
+| Andy Hillman  |    105 | 30000.00 |
++---------------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql>
